@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'database_helper.dart'; // Importa a classe de banco de dados
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,15 +21,12 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
-      // Verifica as credenciais (simulação)
-      if (_emailController.text == 'usuario@gmail.com' && 
-          _passwordController.text == '12345678') {
-        
-        // Fecha o teclado se estiver aberto
-        FocusScope.of(context).unfocus();
-        
+      bool isValidUser = await DatabaseHelper.instance.validateUser(
+          _emailController.text, _passwordController.text);
+
+      if (isValidUser) {
         // Navega para a HomePage
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomePage()),
@@ -52,6 +50,14 @@ class _LoginPageState extends State<LoginPage> {
     final imageSize = screenSize.width * 0.5;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: BackButton(
+          color: const Color.fromARGB(255, 9, 57, 27),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       backgroundColor: const Color.fromRGBO(246, 238, 217, 1.0),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -73,8 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                       fit: BoxFit.contain,
                     ),
                     const SizedBox(height: 20),
-                    
-                    // Title
+                    // Título
                     Text(
                       "EcoAlerta",
                       style: TextStyle(
@@ -83,8 +88,16 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    SizedBox(height: screenSize.height * 0.01),
+                    Text(
+                      "Login",
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 9, 57, 27),
+                        fontSize: screenSize.width * 0.04,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: screenSize.height * 0.05),
-                    
                     // Email Field
                     TextFormField(
                       controller: _emailController,
@@ -95,12 +108,11 @@ class _LoginPageState extends State<LoginPage> {
                         labelText: "Email",
                         prefixIcon: const Icon(Icons.mail),
                       ),
-                      validator: (value) => 
+                      validator: (value) =>
                           value?.isEmpty ?? true ? 'Por favor insira seu email' : null,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 20),
-                    
                     // Password Field
                     TextFormField(
                       controller: _passwordController,
@@ -123,13 +135,14 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     SizedBox(height: screenSize.height * 0.05),
-                    
                     // Login Button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
+                          backgroundColor: Theme.of(context).primaryColor,
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),

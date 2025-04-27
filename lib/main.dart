@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+import 'package:eco_alerta_app/home_page.dart';
+import 'package:eco_alerta_app/initial_page.dart';
+import 'package:eco_alerta_app/register_page.dart';
+import 'package:eco_alerta_app/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       ),
-      home: const LoginPage(),
+      home: InitialPage(),
     );
   }
 }
