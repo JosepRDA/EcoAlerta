@@ -29,16 +29,18 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^5.0.0
-  sqflite_common_ffi: 2.3.5
+  sqflite: ^2.3.2  # (ou a última versão estável)
+  sqflite_common_ffi: ^2.3.5  # Desktop (Windows, Linux, macOS)
+  flutter_launcher_icons: ^0.13.1
+  path: any
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo_EcoAlerta.jpeg"
 
 flutter:
   assets: 
     - assets/images/
-    - assets/fonts/
-  
-  # fonts:
-  #   - family: Cascadia
-  #     fonts:
-  #       - asset: assets/
 
   uses-material-design: true
